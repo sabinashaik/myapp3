@@ -8,6 +8,11 @@ pipeline {
         IMAGE_TAG = "${BUILD_NUMBER}"
     }
 
+    tools {
+        maven "MAVEN3"
+        jdk "JDK21"
+    }
+
     stages {
 
       
