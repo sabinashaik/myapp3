@@ -1,9 +1,6 @@
 pipeline {
     agent any
-Tools {
-    java 'JDK21'
-    maven 'MAVEN3'
-}
+
     environment {
         AWS_REGION = 'us-east-1'
         ACCOUNT_ID = '123456789012'
@@ -13,12 +10,7 @@ Tools {
 
     stages {
 
-        stage('Checkout') {
-            steps {
-                git 'https://github.com/sabinashaik/myapp3.git'
-            }
-        }
-
+      
         stage('Build WAR') {
             steps {
                 sh 'mvn clean package'
