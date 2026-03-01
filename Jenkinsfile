@@ -3,7 +3,7 @@ pipeline {
 
     environment {
         AWS_REGION = 'us-east-1'
-        ECR_REPO = 'bt-app-repo'
+        ECR_REPO = 'myapp3'
         IMAGE_TAG = "${BUILD_NUMBER}"
     }
 
@@ -42,17 +42,17 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                sh 'docker build -t $ECR_REPO:$IMAGE_TAG .'
+                sh 'docker build -t myapp3:1 .'
             }
         }
 
         stage('Push to ECR') {
             steps {
                 sh '''
-                aws ecr get-login-password --region $AWS_REGION | \
+                aws ecr get-login-password --region us-east-1 | \
                 docker login --username AWS --password-stdin xxxxxx.dkr.ecr.$AWS_REGION.amazonaws.com
-                docker tag $ECR_REPO:$IMAGE_TAG xxxxxx.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
-                docker push xxxxxx.dkr.ecr.$AWS_REGION.amazonaws.com/$ECR_REPO:$IMAGE_TAG
+                docker tag $ECR_REPO:$IMAGE_TAG 595658222114.dkr.ecr.us-east-1.amazonaws.com/myapp3:1
+                docker push 595658222114.dkr.ecr.us-east-1.amazonaws.com/myapp3:1
                 '''
             }
         }
@@ -60,7 +60,7 @@ pipeline {
         stage('Deploy to Kubernetes') {
             steps {
                 sh '''
-                helm upgrade --install bt-app ./helm-chart \
+                helm upgrade --install myapp3 ./helm-chart \
                 --set image.tag=$IMAGE_TAG \
                 --namespace dev
                 '''
